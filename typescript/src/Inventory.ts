@@ -10,34 +10,10 @@ export class Inventory {
     }
 
     public getTotalBaseDamage(): number {
-        const leftHand: Item = this._equipment.leftHand;
-        const rightHand: Item = this._equipment.rightHand;
-        const head: Item = this._equipment.head;
-        const feet: Item = this._equipment.feet;
-        const chest: Item = this._equipment.chest;
-
-        return (
-          leftHand.baseDamage +
-          rightHand.baseDamage +
-          head.baseDamage +
-          feet.baseDamage +
-          chest.baseDamage
-        );
+        return this._equipment.getTotalBaseDamage();
     }
 
     public getTotalDamageModifier(): number {
-        const leftHand: Item = this._equipment.leftHand;
-        const rightHand: Item = this._equipment.rightHand;
-        const head: Item = this._equipment.head;
-        const feet: Item = this._equipment.feet;
-        const chest: Item = this._equipment.chest;
-
-        return (
-          leftHand.damageModifier +
-          rightHand.damageModifier +
-          head.damageModifier +
-          feet.damageModifier +
-          chest.damageModifier
-        );
+        return this._equipment.getTotalDamageModifier();
     }
 }

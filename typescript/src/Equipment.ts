@@ -29,4 +29,24 @@ export class Equipment {
     public get chest(): Item {
         return this._chest;
     }
+
+    public getTotalBaseDamage(): number {
+        return (
+          this._leftHand.baseDamage +
+          this._rightHand.baseDamage +
+          this._head.baseDamage +
+          this._feet.baseDamage +
+          this._chest.baseDamage
+        );
+    }
+
+    public getTotalDamageModifier(): number {
+        return (
+          this._leftHand.damageModifier +
+          this._rightHand.damageModifier +
+          this._head.damageModifier +
+          this._feet.damageModifier +
+          this._chest.damageModifier
+        );
+    }
 }
