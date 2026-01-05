@@ -94,7 +94,111 @@ describe('Player', () => {
                 expect(damage.amount).toBe(1);
             });
         });
-    })
+
+        describe('damage modifier', () => {
+            it('includes modifier from left hand', () => {
+                const stats = new Stats(0);
+                const equipment = new Equipment(
+                  new BasicItem('leftHandItem', 1, 1),
+                  new BasicItem('rightHandItem', 1, 0),
+                  new BasicItem('headItem', 1, 0),
+                  new BasicItem('feetItem', 1, 0),
+                  new BasicItem('chestItem', 1, 0),
+                );
+                const player = buildPlayer(equipment, stats);
+                const enemy = buildEnemy();
+
+                const damage = player.calculateDamage(enemy);
+
+                expect(damage.amount).toBe(5);
+            });
+
+            it('includes modifier from right hand', () => {
+                const stats = new Stats(0);
+                const equipment = new Equipment(
+                  new BasicItem('leftHandItem', 1, 0),
+                  new BasicItem('rightHandItem', 1, 1),
+                  new BasicItem('headItem', 1, 0),
+                  new BasicItem('feetItem', 1, 0),
+                  new BasicItem('chestItem', 1, 0),
+                );
+                const player = buildPlayer(equipment, stats);
+                const enemy = buildEnemy();
+
+                const damage = player.calculateDamage(enemy);
+
+                expect(damage.amount).toBe(5);
+            });
+
+            it('includes modifier from head', () => {
+                const stats = new Stats(0);
+                const equipment = new Equipment(
+                  new BasicItem('leftHandItem', 1, 0),
+                  new BasicItem('rightHandItem', 1, 0),
+                  new BasicItem('headItem', 1, 1),
+                  new BasicItem('feetItem', 1, 0),
+                  new BasicItem('chestItem', 1, 0),
+                );
+                const player = buildPlayer(equipment, stats);
+                const enemy = buildEnemy();
+
+                const damage = player.calculateDamage(enemy);
+
+                expect(damage.amount).toBe(5);
+            });
+
+            it('includes modifier from feet', () => {
+                const stats = new Stats(0);
+                const equipment = new Equipment(
+                  new BasicItem('leftHandItem', 1, 0),
+                  new BasicItem('rightHandItem', 1, 0),
+                  new BasicItem('headItem', 1, 0),
+                  new BasicItem('feetItem', 1, 1),
+                  new BasicItem('chestItem', 1, 0),
+                );
+                const player = buildPlayer(equipment, stats);
+                const enemy = buildEnemy();
+
+                const damage = player.calculateDamage(enemy);
+
+                expect(damage.amount).toBe(5);
+            });
+
+            it('includes modifier from chest', () => {
+                const stats = new Stats(0);
+                const equipment = new Equipment(
+                  new BasicItem('leftHandItem', 1, 0),
+                  new BasicItem('rightHandItem', 1, 0),
+                  new BasicItem('headItem', 1, 0),
+                  new BasicItem('feetItem', 1, 0),
+                  new BasicItem('chestItem', 1, 1),
+                );
+                const player = buildPlayer(equipment, stats);
+                const enemy = buildEnemy();
+
+                const damage = player.calculateDamage(enemy);
+
+                expect(damage.amount).toBe(5);
+            });
+
+            it('includes modifier from stats', () => {
+                const stats = new Stats(10);
+                const equipment = new Equipment(
+                  new BasicItem('leftHandItem', 1, 0),
+                  new BasicItem('rightHandItem', 1, 0),
+                  new BasicItem('headItem', 1, 0),
+                  new BasicItem('feetItem', 1, 0),
+                  new BasicItem('chestItem', 1, 0),
+                );
+                const player = buildPlayer(equipment, stats);
+                const enemy = buildEnemy();
+
+                const damage = player.calculateDamage(enemy);
+
+                expect(damage.amount).toBe(5);
+            });
+        })
+    });
 
     function buildPlayer(equipment: Equipment, stats: Stats) {
         return new Player(new Inventory(equipment), stats);

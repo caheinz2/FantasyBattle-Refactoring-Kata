@@ -7,4 +7,8 @@ export class Stats {
     public get strength(): number {
         return this._strength;
     }
+
+    public getTotalDamageModifier(): number {
+        return this._strength * 0.1;
+    }
 }

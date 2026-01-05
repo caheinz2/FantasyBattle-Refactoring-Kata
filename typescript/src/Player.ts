@@ -38,37 +38,13 @@ export class Player extends Target {
     }
 
     private getDamageModifier(): number {
-        const equipment: Equipment = this._inventory.equipment;
-        const leftHand: Item = equipment.leftHand;
-        const rightHand: Item = equipment.rightHand;
-        const head: Item = equipment.head;
-        const feet: Item = equipment.feet;
-        const chest: Item = equipment.chest;
-        const strengthModifier: number = this._stats.strength * 0.1;
-        return (
-            strengthModifier +
-            leftHand.damageModifier +
-            rightHand.damageModifier +
-            head.damageModifier +
-            feet.damageModifier +
-            chest.damageModifier
-        );
+        const inventoryModifier = this._inventory.getTotalDamageModifier();
+        const strengthModifier: number = this._stats.getTotalDamageModifier();
+
+        return inventoryModifier + strengthModifier;
     }
 
     private getBaseDamage() {
-        const inventory: Inventory = this._inventory;
-        const equipment: Equipment = inventory.equipment;
-        const leftHand: Item = equipment.leftHand;
-        const rightHand: Item = equipment.rightHand;
-        const head: Item = equipment.head;
-        const feet: Item = equipment.feet;
-        const chest: Item = equipment.chest;
-        return (
-            leftHand.baseDamage +
-            rightHand.baseDamage +
-            head.baseDamage +
-            feet.baseDamage +
-            chest.baseDamage
-        );
+        return this._inventory.getTotalBaseDamage();
     }
 }
