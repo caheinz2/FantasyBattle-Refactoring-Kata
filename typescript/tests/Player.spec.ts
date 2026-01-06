@@ -131,7 +131,36 @@ describe('Player', () => {
 
                 expect(damage.amount).toBe(5);
             });
-        })
+        });
+
+        describe('damage soak', () => {
+           describe('when targeting a simple enemy', () => {
+               it('reduces damage if enemy has armor', () => {
+                   const stats = new Stats(0);
+                   const equipment = buildEquipmentWithNoModifier({ leftHand: { modifier: 1 } });
+                   const player = buildPlayer(equipment, stats);
+                   const enemyArmor = new SimpleArmor(1);
+                   const enemy = buildEnemy(enemyArmor);
+
+                   const damage = player.calculateDamage(enemy);
+
+                   expect(damage.amount).toBe(4);
+               });
+
+               it('reduces damage if enemy has a buff', () => {
+                   const stats = new Stats(0);
+                   const equipment = buildEquipmentWithNoModifier({ leftHand: { modifier: 1 } });
+                   const player = buildPlayer(equipment, stats);
+                   const enemyArmor = new SimpleArmor(1);
+                   const enemyBuff = new BasicBuff(1, 0);
+                   const enemy = buildEnemy(enemyArmor, enemyBuff);
+
+                   const damage = player.calculateDamage(enemy);
+
+                   expect(damage.amount).toBe(3);
+               });
+           });
+        });
     });
 
     function buildEquipmentWithNoStats(overrides: {
@@ -170,10 +199,7 @@ describe('Player', () => {
         return new Player(new Inventory(equipment), stats);
     }
 
-    function buildEnemy() {
-        const armor = new SimpleArmor(0);
-        const buff = new BasicBuff(0, 0);
-
+    function buildEnemy(armor = new SimpleArmor(0), buff = new BasicBuff(0, 0)) {
         return new SimpleEnemy(armor, [buff]);
     }
 });
