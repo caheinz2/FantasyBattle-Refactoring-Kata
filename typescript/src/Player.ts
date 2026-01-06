@@ -2,35 +2,33 @@ import { Target } from './Target';
 import { Inventory } from './Inventory';
 import { Stats } from './Stats';
 import { Damage } from './Damage';
-import { SimpleEnemy } from './SimpleEnemy';
+import { DamageDealer } from './DamageDealer';
+import { CombatSystem } from './CombatSystem';
 
-export class Player extends Target {
+export class Player extends Target implements DamageDealer {
+    private static combatSystem = new CombatSystem();
+
     public constructor(private _inventory: Inventory, private _stats: Stats) {
         super();
     }
 
     calculateDamage(other: Target): Damage {
-        const baseDamage = this.getBaseDamage();
-        const damageModifier = this.getDamageModifier();
-        const totalDamage = Math.round(baseDamage * damageModifier);
-        const soak = this.getSoak(other, totalDamage);
-        return new Damage(Math.max(0, totalDamage - soak));
-    }
-
-    private getSoak(other: Target, totalDamage: number): number {
-        let soak = 0;
-        if (other instanceof Player) {
-            // TODO: Not implemented yet
-            //  Add friendly fire
-            soak = totalDamage;
-        } else if (other instanceof SimpleEnemy) {
-            soak = other.calculateSoak(totalDamage);
-        }
-        return soak;
+        return Player.combatSystem.calculateDamage(this, other);
     }
 
     private getBaseDamage() {
         return this._inventory.getTotalBaseDamage();
+    }
+
+    public getTotalDamage(): number {
+        const baseDamage = this.getBaseDamage();
+        const damageModifier = this.getDamageModifier();
+        return Math.round(baseDamage * damageModifier);
+    }
+
+    public calculateSoak(totalDamage: number): number {
+        // TODO: Not implemented yet - Add friendly fire
+        return totalDamage;
     }
 
     private getDamageModifier(): number {
