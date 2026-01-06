@@ -29,12 +29,12 @@ export class Player extends Target {
         return soak;
     }
 
-    private getDamageModifier(): number {
-        const strengthModifier: number = this._stats.strength * 0.1;
-        return strengthModifier + this._inventory.equipment.getTotalDamageModifier();
+    private getBaseDamage() {
+        return this._inventory.getTotalBaseDamage();
     }
 
-    private getBaseDamage() {
-        return this._inventory.equipment.getTotalBaseDamage();
+    private getDamageModifier(): number {
+        const strengthModifier: number = this._stats.strength * 0.1;
+        return strengthModifier + this._inventory.getTotalDamageModifier();
     }
 }
