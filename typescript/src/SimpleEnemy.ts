@@ -14,4 +14,8 @@ export class SimpleEnemy extends Target {
     public get armor(): Armor {
         return this._armor;
     }
+
+    public getSoak(): number {
+        return Math.round(this._armor.damageSoak * this._buffs.reduce((total, buff) => total + buff.soakModifier, 1));
+    }
 }
