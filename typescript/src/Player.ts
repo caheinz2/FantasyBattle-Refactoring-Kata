@@ -3,8 +3,6 @@ import { Inventory } from './Inventory';
 import { Stats } from './Stats';
 import { Damage } from './Damage';
 import { SimpleEnemy } from './SimpleEnemy';
-import { Equipment } from './Equipment';
-import { Item } from './Item';
 
 export class Player extends Target {
     public constructor(private _inventory: Inventory, private _stats: Stats) {
@@ -26,49 +24,17 @@ export class Player extends Target {
             //  Add friendly fire
             soak = totalDamage;
         } else if (other instanceof SimpleEnemy) {
-            const simpleEnemy: SimpleEnemy = other;
-            soak = Math.round(simpleEnemy.armor.damageSoak *
-                (simpleEnemy.buffs
-                    .reduce(
-                        (sum, buff) => sum + buff.soakModifier, 0)
-                    + 1)
-            );
+            soak = other.calculateSoak(totalDamage);
         }
         return soak;
     }
 
     private getDamageModifier(): number {
-        const equipment: Equipment = this._inventory.equipment;
-        const leftHand: Item = equipment.leftHand;
-        const rightHand: Item = equipment.rightHand;
-        const head: Item = equipment.head;
-        const feet: Item = equipment.feet;
-        const chest: Item = equipment.chest;
         const strengthModifier: number = this._stats.strength * 0.1;
-        return (
-            strengthModifier +
-            leftHand.damageModifier +
-            rightHand.damageModifier +
-            head.damageModifier +
-            feet.damageModifier +
-            chest.damageModifier
-        );
+        return strengthModifier + this._inventory.equipment.getTotalDamageModifier();
     }
 
     private getBaseDamage() {
-        const inventory: Inventory = this._inventory;
-        const equipment: Equipment = inventory.equipment;
-        const leftHand: Item = equipment.leftHand;
-        const rightHand: Item = equipment.rightHand;
-        const head: Item = equipment.head;
-        const feet: Item = equipment.feet;
-        const chest: Item = equipment.chest;
-        return (
-            leftHand.baseDamage +
-            rightHand.baseDamage +
-            head.baseDamage +
-            feet.baseDamage +
-            chest.baseDamage
-        );
+        return this._inventory.equipment.getTotalBaseDamage();
     }
 }
